@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>অ্যাডমিন প্যানেল — বাংলাদেশ নির্বাচন</title>
+<style>
+:root {
+  --bg: #0a0d14;
+  --bg2: #0f1420;
+  --bg3: #151c2c;
+  --bg4: #1a2235;
+  --bg5: #1f2940;
+  --border: #1e2d45;
+  --border2: #253550;
+  --accent: #00d4aa;
+  --accent2: #3b82f6;
+  --accent3: #8b5cf6;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --text: #e8edf5;
+  --text2: #8899aa;
+  --text3: #5a6a7e;
+  --radius: 10px;
+  --font: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg,#0a0d14,#0d1830);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top:0; z-index: 100;
+}
+.logo { display:flex; align-items:center; gap:12px; }
+.logo-flag { width:34px; height:22px; background:#006a4e; border-radius:3px; display:flex; align-items:center; justify-content:center; }
+.logo-flag::after { content:''; width:12px; height:12px; background:#f42a41; border-radius:50%; margin-left:-2px; }
+.logo h1 { font-size:1.05rem; font-weight:700; }
+.logo span { font-size:0.68rem; color:var(--accent3); letter-spacing:1px; display:block; }
+.header-right { display:flex; align-items:center; gap:10px; }
+.btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:7px; font-family:var(--font); font-size:0.8rem; font-weight:600; cursor:pointer; border:none; transition:all .2s; text-decoration:none; }
+.btn-primary { background:linear-gradient(135deg,var(--accent2),#1d4ed8); color:#fff; }
+.btn-success { background:linear-gradient(135deg,var(--success),#16a34a); color:#fff; }
+.btn-danger { background:linear-gradient(135deg,var(--danger),#dc2626); color:#fff; }
+.btn-warning { background:linear-gradient(135deg,var(--warning),#d97706); color:#fff; }
+.btn-ghost { background:var(--bg4); color:var(--text2); border:1px solid var(--border); }
+.btn-accent { background:linear-gradient(135deg,var(--accent),#00a882); color:#0a0d14; }
+.btn:hover { opacity:.85; transform:translateY(-1px); }
+.btn:active { transform:translateY(0); }
+.btn-sm { padding:4px 10px; font-size:0.72rem; }
+.btn-xs { padding:3px 8px; font-size:0.68rem; border-radius:5px; }
+
+/* ── Layout ── */
+.app-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 57px); }
+
+/* ── Sidebar Nav ── */
+.side-nav {
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  padding:20px 0;
+  position:sticky; top:57px; height:calc(100vh - 57px); overflow-y:auto;
+}
+.nav-section { margin-bottom:6px; }
+.nav-section-title { font-size:0.62rem; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; padding:8px 20px 4px; font-weight:600; }
+.nav-item {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 20px; font-size:0.85rem; color:var(--text2);
+  cursor:pointer; transition:all .15s; border-left:3px solid transparent;
+}
+.nav-item:hover { background:var(--bg3); color:var(--text); border-left-color:var(--border2); }
+.nav-item.active { background:rgba(59,130,246,0.12); color:var(--accent2); border-left-color:var(--accent2); font-weight:600; }
+.nav-item .icon { font-size:1rem; width:20px; text-align:center; }
+.nav-badge { margin-left:auto; background:var(--accent2); color:#fff; font-size:0.62rem; padding:1px 6px; border-radius:10px; font-weight:700; }
+
+/* ── Main Content ── */
+.main-content { padding:24px; overflow-y:auto; }
+.page { display:none; }
+.page.active { display:block; }
+
+/* ── Page Header ── */
+.page-header { margin-bottom:20px; }
+.page-header h2 { font-size:1.4rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+.page-header p { font-size:0.82rem; color:var(--text2); }
+
+/* ── Cards ── */
+.card {
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:16px;
+}
+.card-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.card-header h3 { font-size:0.95rem; font-weight:600; color:var(--text); }
+.card-header p { font-size:0.72rem; color:var(--text2); margin-top:2px; }
+
+/* ── Form elements ── */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.form-group { display:flex; flex-direction:column; gap:5px; }
+.form-group label { font-size:0.75rem; color:var(--text2); font-weight:500; }
+.form-control {
+  background:var(--bg4);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:9px 12px;
+  border-radius:7px;
+  font-family:var(--font);
+  font-size:0.85rem;
+  outline:none;
+  transition:border-color .2s;
+  width:100%;
+}
+.form-control:focus { border-color:var(--accent2); background:var(--bg5); }
+.form-control::placeholder { color:var(--text3); }
+select.form-control { cursor:pointer; }
+textarea.form-control { resize:vertical; min-height:80px; }
+
+/* ── Table ── */
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+th {
+  background:var(--bg3); color:var(--text2);
+  font-size:0.72rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.5px;
+  padding:10px 12px; text-align:left;
+  border-bottom:1px solid var(--border);
+}
+td {
+  padding:10px 12px; font-size:0.82rem;
+  border-bottom:1px solid rgba(30,45,69,0.6);
+  vertical-align:middle;
+}
+tr:hover td { background:rgba(255,255,255,0.02); }
+.badge {
+  display:inline-block; padding:2px 8px;
+  border-radius:20px; font-size:0.68rem; font-weight:600;
+}
+
+/* ── Party color swatch ── */
+.color-swatch { width:18px; height:18px; border-radius:4px; display:inline-block; vertical-align:middle; margin-right:6px; }
+input[type="color"] {
+  width:36px; height:30px; border-radius:6px; border:1px solid var(--border);
+  background:var(--bg4); cursor:pointer; padding:2px;
+}
+
+/* ── Candidate editor ── */
+.cand-editor { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.cand-editor-header {
+  background:var(--bg3); padding:8px 14px;
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:0.78rem; font-weight:600;
+}
+.cand-row {
+  display:grid; grid-template-columns:1fr 1fr auto 80px 40px;
+  gap:8px; align-items:center;
+  padding:8px 14px;
+  border-top:1px solid var(--border);
+}
+.cand-row:nth-child(even) { background:rgba(255,255,255,0.015); }
+.remove-cand { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:#ef4444; width:30px; height:30px; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:all .2s; }
+.remove-cand:hover { background:rgba(239,68,68,0.3); }
+
+/* ── Bulk import ── */
+.import-zone {
+  border:2px dashed var(--border2);
+  border-radius:var(--radius);
+  padding:20px;
+  text-align:center;
+  transition:border-color .2s;
+  cursor:pointer;
+}
+.import-zone:hover { border-color:var(--accent2); }
+.import-zone.drag { border-color:var(--accent); background:rgba(0,212,170,0.05); }
+.import-icon { font-size:2rem; margin-bottom:8px; }
+.import-label { font-size:0.82rem; color:var(--text2); margin-bottom:4px; }
+.import-sub { font-size:0.7rem; color:var(--text3); }
+
+/* ── Stats grid ── */
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.stat-box {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px 20px;
+  position:relative; overflow:hidden;
+}
+.stat-box::before {
+  content:''; position:absolute; top:0; left:0; right:0;
+  height:3px; border-radius:var(--radius) var(--radius) 0 0;
+}
+.stat-box.blue::before { background:var(--accent2); }
+.stat-box.green::before { background:var(--success); }
+.stat-box.purple::before { background:var(--accent3); }
+.stat-box.gold::before { background:var(--warning); }
+.stat-box .s-label { font-size:0.7rem; color:var(--text2); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px; }
+.stat-box .s-val { font-size:1.8rem; font-weight:700; line-height:1; }
+.stat-box .s-sub { font-size:0.7rem; color:var(--text2); margin-top:4px; }
+
+/* ── Toast ── */
+#toast-container { position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+.toast {
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; padding:10px 16px;
+  font-size:0.82rem; min-width:220px;
+  display:flex; align-items:center; gap:10px;
+  animation:slideIn .3s ease; box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.toast.success { border-left:3px solid var(--success); }
+.toast.error { border-left:3px solid var(--danger); }
+.toast.info { border-left:3px solid var(--accent2); }
+@keyframes slideIn { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+
+/* ── Modal ── */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.7);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1000; display:none;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:14px; padding:24px;
+  width:min(90vw, 600px); max-height:85vh;
+  overflow-y:auto; animation:modalIn .25s ease;
+}
+@keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(-10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.modal h2 { font-size:1.1rem; font-weight:700; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+.modal-footer { margin-top:16px; padding-top:14px; border-top:1px solid var(--border); display:flex; gap:8px; justify-content:flex-end; }
+
+/* ── Confirm dialog ── */
+.confirm-text { color:var(--text2); font-size:0.88rem; margin-bottom:6px; }
+
+/* ── Search/filter bar ── */
+.filter-bar { display:flex; gap:8px; align-items:center; margin-bottom:14px; }
+.filter-bar input { flex:1; }
+.filter-bar select { width:180px; }
+
+/* ── Sortable header ── */
+th.sortable { cursor:pointer; user-select:none; }
+th.sortable:hover { color:var(--text); }
+th.sortable::after { content:' ↕'; font-size:0.6rem; }
+th.sort-asc::after { content:' ↑'; }
+th.sort-desc::after { content:' ↓'; }
+
+/* ── Vote input highlight ── */
+.vote-input:focus { border-color:var(--warning) !important; }
+
+@media (max-width:768px) {
+  .app-layout { grid-template-columns:1fr; }
+  .side-nav { display:none; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .form-grid, .form-grid-3 { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-flag"></div>
+    <div>
+      <h1>অ্যাডমিন কন্ট্রোল প্যানেল</h1>
+      <span>বাংলাদেশ নির্বাচন ড্যাশবোর্ড</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="index.html" class="btn btn-ghost" target="_blank">🔗 লাইভ ভিউ</a>
+    <button class="btn btn-success" id="btn-save-all">💾 সংরক্ষণ করুন</button>
+    <button class="btn btn-danger btn-sm" id="btn-reset-all">🗑️ রিসেট</button>
+  </div>
+</header>
+
+<div class="app-layout">
+
+  <!-- ── Side Nav ── -->
+  <nav class="side-nav">
+    <div class="nav-section">
+      <div class="nav-section-title">ড্যাশবোর্ড</div>
+      <div class="nav-item active" data-page="overview">
+        <span class="icon">📊</span> ওভারভিউ
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">ব্যবস্থাপনা</div>
+      <div class="nav-item" data-page="constituencies">
+        <span class="icon">🗺️</span> আসন ব্যবস্থাপনা
+        <span class="nav-badge" id="nav-badge-const">0</span>
+      </div>
+      <div class="nav-item" data-page="votes">
+        <span class="icon">🗳️</span> ভোট আপডেট
+      </div>
+      <div class="nav-item" data-page="parties">
+        <span class="icon">🎨</span> দলীয় রং
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">ডেটা</div>
+      <div class="nav-item" data-page="import">
+        <span class="icon">📥</span> বাল্ক ইমপোর্ট
+      </div>
+      <div class="nav-item" data-page="export">
+        <span class="icon">📤</span> এক্সপোর্ট
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ── -->
+  <main class="main-content">
+
+    <!-- ── Overview ── -->
+    <div class="page active" id="page-overview">
+      <div class="page-header">
+        <h2>📊 ওভারভিউ</h2>
+        <p>সামগ্রিক নির্বাচনী পরিস্থিতির সারসংক্ষেপ</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box blue">
+          <div class="s-label">মোট আসন</div>
+          <div class="s-val" id="ov-total">০</div>
+          <div class="s-sub">লোড করা আসন</div>
+        </div>
+        <div class="stat-box green">
+          <div class="s-label">শীর্ষ দল (আসন)</div>
+          <div class="s-val" id="ov-top-seats" style="font-size:1.2rem">—</div>
+          <div class="s-sub" id="ov-top-party">—</div>
+        </div>
+        <div class="stat-box purple">
+          <div class="s-label">মোট প্রার্থী</div>
+          <div class="s-val" id="ov-candidates">০</div>
+          <div class="s-sub">সকল আসনে</div>
+        </div>
+        <div class="stat-box gold">
+          <div class="s-label">মোট ভোট</div>
+          <div class="s-val" id="ov-votes" style="font-size:1.1rem">০</div>
+          <div class="s-sub">গণনা করা হয়েছে</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3>দলীয় আসন সংখ্যা</h3>
+            <p>বর্তমান ফলাফল অনুযায়ী</p>
+          </div>
+        </div>
+        <div id="ov-party-table"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><h3>সর্বশেষ আপডেট করা আসন</h3></div>
+        </div>
+        <div id="ov-recent-table"></div>
+      </div>
+    </div>
+
+    <!-- ── Constituencies ── -->
+    <div class="page" id="page-constituencies">
+      <div class="page-header">
+        <h2>🗺️ আসন ব্যবস্থাপনা</h2>
+        <p>নির্বাচনী আসন যোগ, সম্পাদনা ও মুছুন</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><h3>নতুন আসন যোগ করুন / সম্পাদনা করুন</h3></div>
+          <button class="btn btn-ghost btn-sm" id="btn-clear-form">✕ ফর্ম ক্লিয়ার</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>আসন আইডি (unique key)</label>
+            <input type="text" class="form-control" id="f-id" placeholder="যেমন: dhaka-6"/>
+          </div>
+          <div class="form-group">
+            <label>আসনের নাম (বাংলায়)</label>
+            <input type="text" class="form-control" id="f-name" placeholder="যেমন: ঢাকা-৬"/>
+          </div>
+          <div class="form-group">
+            <label>বিভাগ</label>
+            <select class="form-control" id="f-division">
+              <option value="">— বিভাগ নির্বাচন করুন —</option>
+              <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
+              <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
+              <option>রংপুর</option><option>ময়মনসিংহ</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Candidates -->
+        <div style="margin-top:16px">
+          <div class="cand-editor">
+            <div class="cand-editor-header">
+              প্রার্থী তালিকা
+              <button class="btn btn-accent btn-xs" id="btn-add-cand">+ প্রার্থী যোগ করুন</button>
+            </div>
+            <div id="cand-rows"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:8px;">
+          <button class="btn btn-success" id="btn-save-const">💾 আসন সংরক্ষণ করুন</button>
+          <button class="btn btn-ghost" id="btn-clear-form2">বাতিল করুন</button>
+        </div>
+      </div>
+
+      <!-- Constituency Table -->
+      <div class="card">
+        <div class="card-header">
+          <div><h3>সকল আসন</h3></div>
+          <div style="display:flex;gap:8px">
+            <input type="text" class="form-control" id="const-search" placeholder="🔍 আসন খুঁজুন..." style="width:200px"/>
+            <select class="form-control" id="const-filter-div" style="width:160px">
+              <option value="">সব বিভাগ</option>
+              <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
+              <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
+              <option>রংপুর</option><option>ময়মনসিংহ</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="const-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort="id">আইডি</th>
+                <th class="sortable" data-sort="name">আসনের নাম</th>
+                <th class="sortable" data-sort="division">বিভাগ</th>
+                <th>শীর্ষ প্রার্থী</th>
+                <th>দল</th>
+                <th class="sortable" data-sort="votes">মোট ভোট</th>
+                <th>কার্যক্রম</th>
+              </tr>
+            </thead>
+            <tbody id="const-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Votes ── -->
+    <div class="page" id="page-votes">
+      <div class="page-header">
+        <h2>🗳️ ভোট আপডেট</h2>
+        <p>প্রার্থীদের ভোট সংখ্যা আপডেট করুন</p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px">
+        <div class="form-grid" style="align-items:end">
+          <div class="form-group">
+            <label>আসন নির্বাচন করুন</label>
+            <select class="form-control" id="vote-const-select">
+              <option value="">— আসন নির্বাচন করুন —</option>
+            </select>
+          </div>
+          <div>
+            <button class="btn btn-primary" id="btn-load-votes">লোড করুন</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="vote-editor-card" style="display:none">
+        <div class="card-header">
+          <div>
+            <h3 id="vote-const-title">—</h3>
+            <p id="vote-const-div" style="font-size:0.72rem;color:var(--text2)"></p>
+          </div>
+          <button class="btn btn-success btn-sm" id="btn-save-votes">💾 ভোট সংরক্ষণ</button>
+        </div>
+        <div id="vote-editor-body"></div>
+      </div>
+
+      <!-- Quick vote update all table -->
+      <div class="card">
+        <div class="card-header"><h3>দ্রুত ভোট আপডেট</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>আসন</th><th>প্রার্থী</th><th>দল</th><th>ভোট</th><th>কার্যক্রম</th></tr>
+            </thead>
+            <tbody id="quick-vote-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Parties ── -->
+    <div class="page" id="page-parties">
+      <div class="page-header">
+        <h2>🎨 দলীয় রং ব্যবস্থাপনা</h2>
+        <p>প্রতিটি দলের জন্য রং নির্ধারণ করুন</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><h3>নতুন দল যোগ করুন</h3></div>
+        </div>
+        <div class="form-grid" style="align-items:end">
+          <div class="form-group">
+            <label>দলের নাম (বাংলায়)</label>
+            <input type="text" class="form-control" id="new-party-name" placeholder="যেমন: নতুন রাজনৈতিক দল"/>
+          </div>
+          <div class="form-group">
+            <label>দলের রং</label>
+            <input type="color" id="new-party-color" value="#ff6600" style="height:42px;width:60px"/>
+          </div>
+          <div>
+            <button class="btn btn-accent" id="btn-add-party">+ দল যোগ করুন</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>দলের তালিকা ও রং</h3></div>
+        <div id="party-list-editor"></div>
+      </div>
+    </div>
+
+    <!-- ── Bulk Import ── -->
+    <div class="page" id="page-import">
+      <div class="page-header">
+        <h2>📥 বাল্ক ইমপোর্ট</h2>
+        <p>JSON বা CSV ফরম্যাটে একাধিক আসনের ডেটা আমদানি করুন</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div><h3>JSON ফরম্যাট ইমপোর্ট</h3></div>
+          <button class="btn btn-ghost btn-sm" id="btn-load-sample">নমুনা লোড করুন</button>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>JSON ডেটা পেস্ট করুন</label>
+          <textarea class="form-control" id="import-json" rows="10"
+            placeholder='উদাহরণ:
+{
+  "constituencies": {
+    "dhaka-10": {
+      "name": "ঢাকা-১০",
+      "division": "ঢাকা",
+      "candidates": [
+        {"name": "প্রার্থী ক", "party": "আওয়ামী লীগ", "votes": 50000},
+        {"name": "প্রার্থী খ", "party": "বিএনপি", "votes": 45000}
+      ]
+    }
+  }
+}'></textarea>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" id="btn-import-json">📥 ইমপোর্ট করুন (মার্জ)</button>
+          <button class="btn btn-warning" id="btn-import-replace">⚠️ সম্পূর্ণ প্রতিস্থাপন করুন</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div><h3>CSV ফরম্যাট ইমপোর্ট</h3></div></div>
+        <div class="form-group" style="margin-bottom:8px">
+          <label>CSV ডেটা পেস্ট করুন (কলাম: id,name,division,candidate_name,party,votes)</label>
+          <textarea class="form-control" id="import-csv" rows="6"
+            placeholder="id,name,division,candidate_name,party,votes
+dhaka-10,ঢাকা-১০,ঢাকা,প্রার্থী ক,আওয়ামী লীগ,50000
+dhaka-10,ঢাকা-১০,ঢাকা,প্রার্থী খ,বিএনপি,45000"></textarea>
+        </div>
+        <button class="btn btn-primary" id="btn-import-csv">📥 CSV ইমপোর্ট করুন</button>
+      </div>
+
+      <div id="import-result" style="display:none" class="card">
+        <div class="card-header"><h3>ইমপোর্ট ফলাফল</h3></div>
+        <div id="import-result-body"></div>
+      </div>
+    </div>
+
+    <!-- ── Export ── -->
+    <div class="page" id="page-export">
+      <div class="page-header">
+        <h2>📤 ডেটা এক্সপোর্ট</h2>
+        <p>সংরক্ষিত ডেটা ডাউনলোড করুন</p>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>JSON এক্সপোর্ট</h3></div>
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <button class="btn btn-primary" id="btn-export-json">📥 JSON ডাউনলোড করুন</button>
+          <button class="btn btn-ghost" id="btn-copy-json">📋 ক্লিপবোর্ডে কপি করুন</button>
+        </div>
+        <textarea class="form-control" id="export-json-view" rows="14" readonly></textarea>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── Confirm Modal ── -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal">
+    <h2>⚠️ নিশ্চিত করুন</h2>
+    <p class="confirm-text" id="confirm-text"></p>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="confirm-cancel">বাতিল</button>
+      <button class="btn btn-danger" id="confirm-ok">নিশ্চিত করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+const App = window.ElectionApp;
+App.initData();
+
+// ── State ────────────────────────────────────────────────────
+let adminData = App.loadData();
+let editingConstId = null;
+let sortState = { col: null, dir: 'asc' };
+let candIdCounter = 0;
+
+// ── Toast ────────────────────────────────────────────────────
+function toast(msg, type = 'info') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── Confirm Modal ─────────────────────────────────────────────
+let confirmResolve = null;
+function confirmDialog(text) {
+  return new Promise(resolve => {
+    confirmResolve = resolve;
+    document.getElementById('confirm-text').textContent = text;
+    document.getElementById('confirm-modal').classList.add('open');
+  });
+}
+document.getElementById('confirm-cancel').onclick = () => {
+  document.getElementById('confirm-modal').classList.remove('open');
+  if (confirmResolve) confirmResolve(false);
+};
+document.getElementById('confirm-ok').onclick = () => {
+  document.getElementById('confirm-modal').classList.remove('open');
+  if (confirmResolve) confirmResolve(true);
+};
+
+// ── Nav ──────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+  item.onclick = () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('page-' + item.dataset.page).classList.add('active');
+    if (item.dataset.page === 'export') refreshExport();
+  };
+});
+
+// ── Save / Reset ─────────────────────────────────────────────
+document.getElementById('btn-save-all').onclick = () => {
+  App.saveData(adminData);
+  toast('সকল ডেটা সংরক্ষিত হয়েছে', 'success');
+};
+document.getElementById('btn-reset-all').onclick = async () => {
+  const ok = await confirmDialog('সকল ডেটা মুছে ডিফল্টে ফিরে যাবেন? এটি পূর্বাবস্থায় ফেরানো যাবে না।');
+  if (!ok) return;
+  adminData = JSON.parse(JSON.stringify(App.DEFAULT_DATA));
+  App.saveData(adminData);
+  toast('ডেটা রিসেট করা হয়েছে', 'info');
+  renderAll();
+};
+
+// ── Overview ─────────────────────────────────────────────────
+function renderOverview() {
+  const consts = adminData.constituencies;
+  const total = Object.keys(consts).length;
+  const seats = App.getSeatCount(adminData);
+  const topEntry = Object.entries(seats).sort((a,b)=>b[1]-a[1])[0];
+  const totalCands = Object.values(consts).reduce((s,c)=>s+(c.candidates||[]).length,0);
+  const totalVotes = Object.values(consts).reduce((s,c)=>s+App.getTotalVotes(c),0);
+
+  document.getElementById('ov-total').textContent = App.toBengaliNum(total);
+  document.getElementById('ov-top-seats').textContent = topEntry ? App.toBengaliNum(topEntry[1]) : '০';
+  document.getElementById('ov-top-party').textContent = topEntry ? topEntry[0] : '—';
+  document.getElementById('ov-candidates').textContent = App.toBengaliNum(totalCands);
+  document.getElementById('ov-votes').textContent = App.formatVotes(totalVotes);
+  document.getElementById('nav-badge-const').textContent = App.toBengaliNum(total);
+
+  // Party table
+  const sorted = Object.entries(seats).sort((a,b)=>b[1]-a[1]);
+  let html = '<div class="table-wrap"><table><thead><tr><th>দল</th><th>রং</th><th>আসন</th><th>শতকরা</th></tr></thead><tbody>';
+  sorted.forEach(([party, count]) => {
+    const color = adminData.parties[party] || '#888';
+    const pct = total > 0 ? (count/total*100).toFixed(1) : 0;
+    html += `<tr>
+      <td>${party}</td>
+      <td><span class="color-swatch" style="background:${color}"></span>${color}</td>
+      <td><strong>${App.toBengaliNum(count)}</strong></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:${color};border-radius:3px"></div>
+          </div>
+          <span style="font-size:0.75rem;color:var(--text2)">${pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  document.getElementById('ov-party-table').innerHTML = html;
+
+  // Recent table — top 5 by votes
+  const recent = Object.entries(consts)
+    .map(([id,c]) => ({id,...c, totalVotes: App.getTotalVotes(c), leader: App.getLeader(c)}))
+    .sort((a,b)=>b.totalVotes-a.totalVotes).slice(0,5);
+  let rHtml = '<div class="table-wrap"><table><thead><tr><th>আসন</th><th>বিভাগ</th><th>শীর্ষ প্রার্থী</th><th>ভোট</th></tr></thead><tbody>';
+  recent.forEach(c => {
+    const color = c.leader ? (adminData.parties[c.leader.party]||'#888') : '#888';
+    rHtml += `<tr>
+      <td>${c.name||c.id}</td>
+      <td><span style="font-size:0.75rem;color:var(--text2)">${c.division||'—'}</span></td>
+      <td>${c.leader ? `<span class="color-swatch" style="background:${color}"></span>${c.leader.name}` : '—'}</td>
+      <td><strong>${App.formatVotes(c.totalVotes)}</strong></td>
+    </tr>`;
+  });
+  rHtml += '</tbody></table></div>';
+  document.getElementById('ov-recent-table').innerHTML = rHtml;
+}
+
+// ── Constituency Form ─────────────────────────────────────────
+function clearConstForm() {
+  editingConstId = null;
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-id').disabled = false;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-division').value = '';
+  renderCandRows([]);
+}
+
+['btn-clear-form','btn-clear-form2'].forEach(id => {
+  document.getElementById(id).onclick = clearConstForm;
+});
+
+function renderCandRows(candidates) {
+  const container = document.getElementById('cand-rows');
+  container.innerHTML = '';
+  (candidates || []).forEach((c, i) => addCandRow(c, i));
+}
+
+function addCandRow(cand = {}, index = null) {
+  const container = document.getElementById('cand-rows');
+  const id = ++candIdCounter;
+  const row = document.createElement('div');
+  row.className = 'cand-row';
+  row.dataset.rowId = id;
+
+  // Build party options
+  const partyOpts = Object.keys(adminData.parties).map(p =>
+    `<option value="${p}" ${cand.party===p?'selected':''}>${p}</option>`).join('');
+
+  row.innerHTML = `
+    <input type="text" class="form-control" placeholder="প্রার্থীর নাম" value="${cand.name||''}" data-field="name"/>
+    <select class="form-control" data-field="party">${partyOpts}<option value="__other__">অন্যান্য...</option></select>
+    <input type="number" class="form-control vote-input" placeholder="ভোট সংখ্যা" value="${cand.votes||0}" data-field="votes" min="0"/>
+    <button class="remove-cand" title="মুছুন">✕</button>`;
+
+  row.querySelector('.remove-cand').onclick = () => row.remove();
+  container.appendChild(row);
+}
+
+document.getElementById('btn-add-cand').onclick = () => addCandRow();
+
+function collectCandidates() {
+  const rows = document.querySelectorAll('#cand-rows .cand-row');
+  return Array.from(rows).map(row => ({
+    name: row.querySelector('[data-field="name"]').value.trim(),
+    party: row.querySelector('[data-field="party"]').value,
+    votes: parseInt(row.querySelector('[data-field="votes"]').value) || 0
+  })).filter(c => c.name);
+}
+
+document.getElementById('btn-save-const').onclick = () => {
+  const id = document.getElementById('f-id').value.trim().replace(/\s+/g,'-');
+  const name = document.getElementById('f-name').value.trim();
+  const division = document.getElementById('f-division').value;
+  if (!id || !name) { toast('আইডি ও নাম আবশ্যক', 'error'); return; }
+  const candidates = collectCandidates();
+  adminData.constituencies[id] = { name, division, candidates };
+  App.saveData(adminData);
+  toast(`আসন "${name}" সংরক্ষিত হয়েছে`, 'success');
+  clearConstForm();
+  renderAll();
+};
+
+// ── Constituency Table ────────────────────────────────────────
+function renderConstTable() {
+  const search = (document.getElementById('const-search')?.value || '').trim();
+  const filterDiv = document.getElementById('const-filter-div')?.value || '';
+  let entries = Object.entries(adminData.constituencies);
+  if (search) entries = entries.filter(([id,c]) => c.name?.includes(search) || id.includes(search));
+  if (filterDiv) entries = entries.filter(([,c]) => c.division === filterDiv);
+
+  if (sortState.col) {
+    entries.sort((a,b) => {
+      let va, vb;
+      if (sortState.col === 'id') { va=a[0]; vb=b[0]; }
+      else if (sortState.col === 'name') { va=a[1].name||''; vb=b[1].name||''; }
+      else if (sortState.col === 'division') { va=a[1].division||''; vb=b[1].division||''; }
+      else if (sortState.col === 'votes') { va=App.getTotalVotes(a[1]); vb=App.getTotalVotes(b[1]); }
+      return sortState.dir === 'asc' ? (va>vb?1:-1) : (va<vb?1:-1);
+    });
+  }
+
+  const tbody = document.getElementById('const-tbody');
+  tbody.innerHTML = '';
+  entries.forEach(([id, c]) => {
+    const leader = App.getLeader(c);
+    const color = leader ? (adminData.parties[leader.party]||'#888') : '#888';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><code style="font-size:0.72rem;color:var(--text2)">${id}</code></td>
+      <td><strong>${c.name||'—'}</strong></td>
+      <td>${c.division||'—'}</td>
+      <td>${leader ? leader.name : '—'}</td>
+      <td>${leader ? `<span class="color-swatch" style="background:${color}"></span>${leader.party}` : '—'}</td>
+      <td>${App.formatVotes(App.getTotalVotes(c))}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-ghost btn-xs" data-edit="${id}">✏️ সম্পাদনা</button>
+          <button class="btn btn-danger btn-xs" data-del="${id}">🗑️</button>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll('[data-edit]').forEach(btn => btn.onclick = () => loadConstForEdit(btn.dataset.edit));
+  tbody.querySelectorAll('[data-del]').forEach(btn => btn.onclick = () => deleteConst(btn.dataset.del));
+}
+
+function loadConstForEdit(id) {
+  editingConstId = id;
+  const c = adminData.constituencies[id];
+  document.getElementById('f-id').value = id;
+  document.getElementById('f-id').disabled = true;
+  document.getElementById('f-name').value = c.name || '';
+  document.getElementById('f-division').value = c.division || '';
+  renderCandRows(c.candidates || []);
+  document.getElementById('page-constituencies').scrollTo(0, 0);
+  document.querySelector('[data-page="constituencies"]').click();
+  toast(`"${c.name}" সম্পাদনার জন্য লোড করা হয়েছে`, 'info');
+}
+
+async function deleteConst(id) {
+  const c = adminData.constituencies[id];
+  const ok = await confirmDialog(`"${c?.name || id}" আসনটি মুছে ফেলবেন?`);
+  if (!ok) return;
+  delete adminData.constituencies[id];
+  App.saveData(adminData);
+  toast('আসন মুছে ফেলা হয়েছে', 'success');
+  renderAll();
+}
+
+// Sortable headers
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.onclick = () => {
+    const col = th.dataset.sort;
+    if (sortState.col === col) sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+    else { sortState.col = col; sortState.dir = 'asc'; }
+    document.querySelectorAll('th.sortable').forEach(t => { t.classList.remove('sort-asc','sort-desc'); });
+    th.classList.add(sortState.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+    renderConstTable();
+  };
+});
+
+['const-search','const-filter-div'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', renderConstTable);
+});
+
+// ── Votes Page ────────────────────────────────────────────────
+function renderVoteConstSelect() {
+  const sel = document.getElementById('vote-const-select');
+  sel.innerHTML = '<option value="">— আসন নির্বাচন করুন —</option>';
+  Object.entries(adminData.constituencies).forEach(([id,c]) => {
+    sel.innerHTML += `<option value="${id}">${c.name}</option>`;
+  });
+}
+
+document.getElementById('btn-load-votes').onclick = () => {
+  const id = document.getElementById('vote-const-select').value;
+  if (!id) { toast('একটি আসন নির্বাচন করুন', 'error'); return; }
+  loadVoteEditor(id);
+};
+
+function loadVoteEditor(id) {
+  const c = adminData.constituencies[id];
+  if (!c) return;
+  document.getElementById('vote-editor-card').style.display = 'block';
+  document.getElementById('vote-const-title').textContent = c.name;
+  document.getElementById('vote-const-div').textContent = c.division ? `📍 ${c.division} বিভাগ` : '';
+
+  const body = document.getElementById('vote-editor-body');
+  body.innerHTML = '';
+  (c.candidates || []).forEach((cand, i) => {
+    const color = adminData.parties[cand.party] || '#888';
+    const div = document.createElement('div');
+    div.style.cssText = 'display:grid;grid-template-columns:2fr 2fr auto;gap:10px;align-items:center;margin-bottom:10px';
+    div.innerHTML = `
+      <div>
+        <div style="font-weight:600;font-size:0.88rem">${cand.name}</div>
+        <div style="font-size:0.7rem;color:var(--text2)"><span class="color-swatch" style="background:${color}"></span>${cand.party}</div>
+      </div>
+      <input type="number" class="form-control vote-input" value="${cand.votes||0}" data-cand-idx="${i}" min="0" style="font-size:1rem;font-weight:700;text-align:right"/>
+      <div style="font-size:0.72rem;color:var(--text2);text-align:right">${App.formatVotes(cand.votes)} ভোট</div>`;
+    body.appendChild(div);
+  });
+
+  document.getElementById('btn-save-votes').onclick = () => {
+    body.querySelectorAll('[data-cand-idx]').forEach(inp => {
+      const idx = parseInt(inp.dataset.candIdx);
+      adminData.constituencies[id].candidates[idx].votes = parseInt(inp.value) || 0;
+    });
+    App.saveData(adminData);
+    toast(`ভোট সংরক্ষিত হয়েছে`, 'success');
+    renderAll();
+  };
+}
+
+function renderQuickVoteTable() {
+  const tbody = document.getElementById('quick-vote-tbody');
+  tbody.innerHTML = '';
+  Object.entries(adminData.constituencies).forEach(([constId, c]) => {
+    (c.candidates || []).forEach((cand, idx) => {
+      const color = adminData.parties[cand.party] || '#888';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-size:0.78rem">${c.name}</td>
+        <td>${cand.name}</td>
+        <td><span class="color-swatch" style="background:${color}"></span>${cand.party}</td>
+        <td><input type="number" class="form-control vote-input" value="${cand.votes||0}" style="width:120px;text-align:right" data-const="${constId}" data-idx="${idx}" min="0"/></td>
+        <td><button class="btn btn-success btn-xs" data-save-const="${constId}" data-save-idx="${idx}">✓</button></td>`;
+      tbody.appendChild(tr);
+    });
+  });
+
+  tbody.querySelectorAll('[data-save-const]').forEach(btn => {
+    btn.onclick = () => {
+      const constId = btn.dataset.saveConst;
+      const idx = parseInt(btn.dataset.saveIdx);
+      const inp = tbody.querySelector(`[data-const="${constId}"][data-idx="${idx}"]`);
+      adminData.constituencies[constId].candidates[idx].votes = parseInt(inp.value) || 0;
+      App.saveData(adminData);
+      toast('ভোট আপডেট করা হয়েছে', 'success');
+      renderAll();
+    };
+  });
+}
+
+// ── Parties Page ──────────────────────────────────────────────
+function renderPartyEditor() {
+  const container = document.getElementById('party-list-editor');
+  container.innerHTML = '';
+  Object.entries(adminData.parties).forEach(([name, color]) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:10px;border-bottom:1px solid var(--border)';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="color-swatch" style="background:${color};width:20px;height:20px;border-radius:5px"></span>
+        <strong>${name}</strong>
+      </div>
+      <input type="color" value="${color}" data-party="${name}" class="party-color-inp" style="height:36px;width:50px"/>
+      <input type="text" class="form-control" value="${name}" data-old-name="${name}" style="width:200px" placeholder="দলের নাম"/>
+      <button class="btn btn-danger btn-xs" data-del-party="${name}">🗑️</button>`;
+    container.appendChild(row);
+  });
+
+  container.querySelectorAll('.party-color-inp').forEach(inp => {
+    inp.oninput = () => {
+      adminData.parties[inp.dataset.party] = inp.value;
+      App.saveData(adminData);
+      renderAll();
+    };
+  });
+
+  container.querySelectorAll('input[data-old-name]').forEach(inp => {
+    inp.onblur = () => {
+      const oldName = inp.dataset.oldName;
+      const newName = inp.value.trim();
+      if (!newName || newName === oldName) return;
+      // Rename party everywhere
+      const color = adminData.parties[oldName];
+      delete adminData.parties[oldName];
+      adminData.parties[newName] = color;
+      Object.values(adminData.constituencies).forEach(c => {
+        (c.candidates||[]).forEach(cand => { if (cand.party === oldName) cand.party = newName; });
+      });
+      App.saveData(adminData);
+      toast(`দলের নাম পরিবর্তন করা হয়েছে`, 'success');
+      renderAll();
+    };
+  });
+
+  container.querySelectorAll('[data-del-party]').forEach(btn => {
+    btn.onclick = async () => {
+      const name = btn.dataset.delParty;
+      const ok = await confirmDialog(`"${name}" দলটি মুছে ফেলবেন?`);
+      if (!ok) return;
+      delete adminData.parties[name];
+      App.saveData(adminData);
+      toast('দল মুছে ফেলা হয়েছে', 'success');
+      renderAll();
+    };
+  });
+}
+
+document.getElementById('btn-add-party').onclick = () => {
+  const name = document.getElementById('new-party-name').value.trim();
+  const color = document.getElementById('new-party-color').value;
+  if (!name) { toast('দলের নাম দিন', 'error'); return; }
+  adminData.parties[name] = color;
+  App.saveData(adminData);
+  document.getElementById('new-party-name').value = '';
+  toast(`"${name}" দল যোগ করা হয়েছে`, 'success');
+  renderAll();
+};
+
+// ── Bulk Import ───────────────────────────────────────────────
+document.getElementById('btn-load-sample').onclick = () => {
+  document.getElementById('import-json').value = JSON.stringify({
+    constituencies: {
+      "dhaka-sample": {
+        name: "ঢাকা-নমুনা", division: "ঢাকা",
+        candidates: [
+          { name: "নমুনা প্রার্থী ক", party: "আওয়ামী লীগ", votes: 50000 },
+          { name: "নমুনা প্রার্থী খ", party: "বিএনপি", votes: 45000 }
+        ]
+      }
+    }
+  }, null, 2);
+};
+
+function showImportResult(msg, type) {
+  const res = document.getElementById('import-result');
+  res.style.display = 'block';
+  document.getElementById('import-result-body').innerHTML =
+    `<div class="${type === 'success' ? 'btn-success' : 'btn-danger'}" style="padding:10px;border-radius:8px;font-size:0.85rem">${msg}</div>`;
+}
+
+document.getElementById('btn-import-json').onclick = () => {
+  try {
+    const raw = document.getElementById('import-json').value.trim();
+    const parsed = JSON.parse(raw);
+    let count = 0;
+    if (parsed.constituencies) {
+      Object.assign(adminData.constituencies, parsed.constituencies);
+      count += Object.keys(parsed.constituencies).length;
+    }
+    if (parsed.parties) Object.assign(adminData.parties, parsed.parties);
+    App.saveData(adminData);
+    toast(`${App.toBengaliNum(count)}টি আসন ইমপোর্ট হয়েছে`, 'success');
+    showImportResult(`✅ সফলভাবে ${count}টি আসন মার্জ করা হয়েছে।`, 'success');
+    renderAll();
+  } catch(e) {
+    toast('JSON পার্স করতে সমস্যা হয়েছে', 'error');
+    showImportResult('❌ JSON ফরম্যাট ভুল: ' + e.message, 'error');
+  }
+};
+
+document.getElementById('btn-import-replace').onclick = async () => {
+  const ok = await confirmDialog('সমস্ত বিদ্যমান আসন মুছে নতুন ডেটা দিয়ে প্রতিস্থাপন করবেন?');
+  if (!ok) return;
+  try {
+    const raw = document.getElementById('import-json').value.trim();
+    const parsed = JSON.parse(raw);
+    if (parsed.constituencies) adminData.constituencies = parsed.constituencies;
+    if (parsed.parties) adminData.parties = parsed.parties;
+    App.saveData(adminData);
+    toast('ডেটা প্রতিস্থাপিত হয়েছে', 'success');
+    renderAll();
+  } catch(e) {
+    toast('JSON পার্স করতে সমস্যা', 'error');
+  }
+};
+
+document.getElementById('btn-import-csv').onclick = () => {
+  try {
+    const raw = document.getElementById('import-csv').value.trim();
+    const lines = raw.split('\n').filter(l=>l.trim());
+    const header = lines[0].split(',').map(h=>h.trim());
+    let count = 0;
+    const tempMap = {};
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',').map(c=>c.trim());
+      const row = {};
+      header.forEach((h,j) => row[h] = cols[j] || '');
+      const id = row.id;
+      if (!id) continue;
+      if (!tempMap[id]) {
+        tempMap[id] = { name: row.name, division: row.division, candidates: [] };
+        count++;
+      }
+      if (row.candidate_name) {
+        tempMap[id].candidates.push({
+          name: row.candidate_name,
+          party: row.party || 'স্বতন্ত্র',
+          votes: parseInt(row.votes) || 0
+        });
+      }
+    }
+    Object.assign(adminData.constituencies, tempMap);
+    App.saveData(adminData);
+    toast(`CSV থেকে ${App.toBengaliNum(count)}টি আসন ইমপোর্ট হয়েছে`, 'success');
+    showImportResult(`✅ CSV থেকে ${count}টি আসন ইমপোর্ট সফল।`, 'success');
+    renderAll();
+  } catch(e) {
+    toast('CSV পার্স সমস্যা: ' + e.message, 'error');
+  }
+};
+
+// ── Export ────────────────────────────────────────────────────
+function refreshExport() {
+  document.getElementById('export-json-view').value = JSON.stringify(adminData, null, 2);
+}
+
+document.getElementById('btn-export-json').onclick = () => {
+  const blob = new Blob([JSON.stringify(adminData, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'election_data_' + Date.now() + '.json';
+  a.click();
+  toast('JSON ডাউনলোড শুরু হয়েছে', 'success');
+};
+
+document.getElementById('btn-copy-json').onclick = () => {
+  navigator.clipboard.writeText(JSON.stringify(adminData, null, 2))
+    .then(() => toast('ক্লিপবোর্ডে কপি হয়েছে', 'success'))
+    .catch(() => toast('কপি করা যায়নি', 'error'));
+};
+
+// ── Real-time sync ────────────────────────────────────────────
+window.addEventListener('storage', e => {
+  if (e.key === App.STORAGE_KEY) {
+    adminData = App.loadData();
+    renderAll();
+  }
+});
+
+// ── Full render ───────────────────────────────────────────────
+function renderAll() {
+  renderOverview();
+  renderConstTable();
+  renderVoteConstSelect();
+  renderQuickVoteTable();
+  renderPartyEditor();
+  document.getElementById('nav-badge-const').textContent =
+    App.toBengaliNum(Object.keys(adminData.constituencies).length);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
