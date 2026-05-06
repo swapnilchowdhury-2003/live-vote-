@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>বাংলাদেশ নির্বাচন লাইভ ড্যাশবোর্ড</title>
+<style>
+/* ── Variables ── */
+:root {
+  --bg: #0a0d14;
+  --bg2: #0f1420;
+  --bg3: #151c2c;
+  --bg4: #1a2235;
+  --border: #1e2d45;
+  --accent: #00d4aa;
+  --accent2: #3b82f6;
+  --text: #e8edf5;
+  --text2: #8899aa;
+  --danger: #ef4444;
+  --gold: #f59e0b;
+  --radius: 10px;
+  --font: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #0a0d14 0%, #0f1e35 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-flag {
+  width: 38px;
+  height: 26px;
+  background: #006a4e;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-flag::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: #f42a41;
+  border-radius: 50%;
+  margin-left: -2px;
+}
+.logo-text h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.logo-text span {
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #ef4444;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  background: #ef4444;
+  border-radius: 50%;
+  animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+#clock {
+  font-size: 0.82rem;
+  color: var(--text2);
+}
+.admin-btn {
+  background: linear-gradient(135deg, var(--accent2), #1d4ed8);
+  color: #fff;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 7px;
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity .2s;
+}
+.admin-btn:hover { opacity: 0.85; }
+
+/* ── Layout ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  grid-template-rows: auto 1fr;
+  gap: 0;
+  height: calc(100vh - 61px);
+}
+
+/* ── Stats Bar ── */
+.stats-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.stat-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  min-width: 160px;
+  flex-shrink: 0;
+}
+.stat-card .label {
+  font-size: 0.7rem;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.stat-card .value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-card .sub {
+  font-size: 0.68rem;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+/* ── Map Section ── */
+.map-section {
+  background: var(--bg2);
+  padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+.map-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.map-controls h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  flex: 1;
+}
+.ctrl-btn {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.ctrl-btn:hover, .ctrl-btn.active {
+  background: var(--accent2);
+  border-color: var(--accent2);
+  color: #fff;
+}
+.search-wrap {
+  position: relative;
+}
+.search-wrap input {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 10px 5px 30px;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 0.78rem;
+  width: 180px;
+  outline: none;
+}
+.search-wrap input:focus { border-color: var(--accent2); }
+.search-wrap .icon {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text2);
+  font-size: 0.8rem;
+}
+#map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: radial-gradient(ellipse at center, #0d1b2a 0%, #070b10 100%);
+  border: 1px solid var(--border);
+}
+#bd-map {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s ease;
+  transform-origin: center center;
+}
+
+/* SVG map styles */
+.region {
+  stroke: rgba(255,255,255,0.18);
+  stroke-width: 0.8;
+  cursor: pointer;
+  transition: all 0.25s;
+  filter: drop-shadow(0 0 0px transparent);
+}
+.region:hover {
+  stroke: #fff;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+}
+.region.selected {
+  stroke: var(--gold);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px rgba(245,158,11,0.5));
+}
+.region-label {
+  font-size: 5px;
+  fill: rgba(255,255,255,0.7);
+  pointer-events: none;
+  font-family: var(--font);
+}
+
+/* Tooltip */
+#tooltip {
+  position: fixed;
+  background: rgba(10,13,20,0.97);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  min-width: 220px;
+  max-width: 280px;
+  pointer-events: none;
+  z-index: 999;
+  display: none;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+#tooltip h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.tt-candidate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.tt-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tt-info { flex: 1; }
+.tt-name { font-size: 0.8rem; font-weight: 600; }
+.tt-party { font-size: 0.68rem; color: var(--text2); }
+.tt-votes { font-size: 0.82rem; font-weight: 700; color: var(--gold); margin-left: auto; }
+.tt-diff {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text2);
+  display: flex;
+  justify-content: space-between;
+}
+.tt-diff span { color: var(--accent); font-weight: 600; }
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--bg2);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-section {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-section h3 {
+  font-size: 0.78rem;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* Party seats */
+.party-seats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.party-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.party-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.party-name-label {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+.party-seats-bar {
+  flex: 2;
+  height: 6px;
+  background: var(--bg4);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.party-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.party-seats-count {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* Constituency detail */
+.detail-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.detail-box .detail-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.detail-empty {
+  color: var(--text2);
+  font-size: 0.82rem;
+  text-align: center;
+  padding: 20px 0;
+}
+.cand-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.cand-rank {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.rank-1 { background: rgba(245,158,11,0.2); color: var(--gold); border: 1px solid var(--gold); }
+.rank-2 { background: rgba(148,163,184,0.15); color: #94a3b8; border: 1px solid #334155; }
+.rank-n { background: var(--bg4); color: var(--text2); border: 1px solid var(--border); }
+.cand-info { flex: 1; }
+.cand-name { font-size: 0.85rem; font-weight: 600; }
+.cand-party { font-size: 0.7rem; color: var(--text2); }
+.cand-votes { text-align: right; }
+.cand-vcount { font-size: 0.9rem; font-weight: 700; color: var(--gold); }
+.cand-vpct { font-size: 0.68rem; color: var(--text2); }
+.vote-progress {
+  height: 3px;
+  background: var(--bg4);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.vote-bar { height: 100%; border-radius: 2px; transition: width 0.5s; }
+.diff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,212,170,0.1);
+  border: 1px solid rgba(0,212,170,0.3);
+  color: var(--accent);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* Chart */
+#pie-chart-wrap {
+  position: relative;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Constituency list */
+.const-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.const-list::-webkit-scrollbar { width: 3px; }
+.const-list::-webkit-scrollbar-thumb { background: var(--border); }
+.const-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.const-item:hover { background: var(--bg4); }
+.const-item.active { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); }
+.const-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.const-name { flex: 1; font-size: 0.8rem; }
+.const-leader { font-size: 0.68rem; color: var(--text2); }
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: var(--text2);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* Zoom controls */
+.zoom-controls {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+}
+.zoom-btn {
+  width: 32px;
+  height: 32px;
+  background: rgba(15,20,32,0.9);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+}
+.zoom-btn:hover { background: var(--accent2); border-color: var(--accent2); }
+
+/* Division filter */
+.div-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.div-btn {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: var(--font);
+}
+.div-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+.div-btn.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .main-grid { grid-template-columns: 1fr; height: auto; }
+  .map-section { height: 60vw; }
+  .sidebar { height: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo">
+    <div class="logo-flag"></div>
+    <div class="logo-text">
+      <h1>বাংলাদেশ নির্বাচন</h1>
+      <span>লাইভ ড্যাশবোর্ড ২০২৪</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-badge"><span class="live-dot"></span>লাইভ</div>
+    <span id="clock"></span>
+    <a href="admin.html" class="admin-btn">⚙️ অ্যাডমিন</a>
+  </div>
+</header>
+
+<!-- ── Stats Bar ── -->
+<div class="stats-bar" id="stats-bar">
+  <div class="stat-card">
+    <div class="label">মোট আসন</div>
+    <div class="value" id="stat-total">৩০০</div>
+    <div class="sub">জাতীয় সংসদ</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">ফলাফল প্রাপ্ত</div>
+    <div class="value" id="stat-declared">০</div>
+    <div class="sub">আসনের ফলাফল</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">শীর্ষ দল</div>
+    <div class="value" id="stat-leading-party" style="font-size:0.95rem;">—</div>
+    <div class="sub" id="stat-leading-seats">০ আসন</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">মোট ভোট গণনা</div>
+    <div class="value" id="stat-votes" style="font-size:1.1rem;">০</div>
+    <div class="sub">ভোট</div>
+  </div>
+</div>
+
+<!-- ── Main Grid ── -->
+<div class="main-grid">
+
+  <!-- Map Section -->
+  <div class="map-section">
+    <div class="map-controls">
+      <h2>🗺️ নির্বাচনী মানচিত্র</h2>
+      <div class="div-filter" id="div-filter">
+        <button class="div-btn active" data-div="all">সব বিভাগ</button>
+      </div>
+      <div class="search-wrap">
+        <span class="icon">🔍</span>
+        <input type="text" id="search-input" placeholder="আসন খুঁজুন..."/>
+      </div>
+      <button class="ctrl-btn" id="btn-reset-view">↺ রিসেট</button>
+    </div>
+    <div id="map-container">
+      <svg id="bd-map" viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="zoom-in" title="জুম ইন">+</button>
+        <button class="zoom-btn" id="zoom-out" title="জুম আউট">−</button>
+        <button class="zoom-btn" id="zoom-reset" title="রিসেট">⌂</button>
+      </div>
+    </div>
+    <div class="legend" id="map-legend"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <!-- Party Seats -->
+    <div class="sidebar-section">
+      <h3>দলীয় আসন সংখ্যা</h3>
+      <div class="party-seats" id="party-seats"></div>
+      <div id="pie-chart-wrap">
+        <canvas id="pie-chart" width="180" height="180"></canvas>
+      </div>
+    </div>
+
+    <!-- Selected Constituency Detail -->
+    <div class="sidebar-section">
+      <h3>নির্বাচিত আসন</h3>
+      <div class="detail-box" id="detail-box">
+        <div class="detail-empty">মানচিত্রে একটি আসন নির্বাচন করুন</div>
+      </div>
+    </div>
+
+    <!-- Constituency List -->
+    <div class="sidebar-section">
+      <h3>সকল আসন</h3>
+      <div class="const-list" id="const-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Tooltip -->
+<div id="tooltip"></div>
+
+<script src="app.js"></script>
+<script>
+// ── Inline Chart.js (minimal pie) ─────────────────────────────
+// We implement a lightweight canvas pie chart without library dependency
+function drawPie(canvasId, segments) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const r = Math.min(cx, cy) - 10;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const total = segments.reduce((s, seg) => s + seg.value, 0);
+  if (total === 0) return;
+  let startAngle = -Math.PI / 2;
+  segments.forEach(seg => {
+    const angle = (seg.value / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, startAngle + angle);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    ctx.strokeStyle = '#0a0d14';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    startAngle += angle;
+  });
+  // Donut hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.52, 0, Math.PI * 2);
+  ctx.fillStyle = '#0f1420';
+  ctx.fill();
+}
+
+// ── App State ────────────────────────────────────────────────
+const App = window.ElectionApp;
+App.initData();
+
+let state = {
+  data: App.loadData(),
+  selectedId: null,
+  zoom: 1,
+  zoomX: 250,
+  zoomY: 300,
+  filterDiv: 'all',
+  searchQ: ''
+};
+
+// ── Clock ──
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleDateString('bn-BD') + ' ' + now.toLocaleTimeString('bn-BD');
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Bangladesh SVG Map (Simplified divisions as clickable regions) ──
+// Each "region" represents a constituency group. We create approximate
+// district-level polygons for the 8 divisions of Bangladesh.
+const DIVISION_SHAPES = {
+  "ঢাকা": [
+    {id:"dhaka-1", label:"ঢাকা-১", cx:255, cy:285, path:"M220,250 L290,248 L295,260 L300,275 L285,295 L265,305 L240,300 L225,285 Z"},
+    {id:"dhaka-2", label:"ঢাকা-২", cx:250, cy:240, path:"M215,215 L285,213 L290,228 L290,248 L220,250 L215,235 Z"},
+    {id:"dhaka-3", label:"ঢাকা-৩", cx:290, cy:260, path:"M290,248 L335,246 L340,265 L330,285 L310,290 L295,275 Z"},
+    {id:"dhaka-4", label:"ঢাকা-৪", cx:228, cy:310, path:"M205,295 L240,300 L245,318 L230,330 L210,325 L200,310 Z"},
+    {id:"dhaka-5", label:"ঢাকা-৫", cx:265, cy:318, path:"M240,300 L285,295 L292,315 L280,330 L258,335 L245,318 Z"},
+  ],
+  "চট্টগ্রাম": [
+    {id:"chittagong-1", label:"চট্টগ্রাম-১", cx:370, cy:340, path:"M340,305 L400,300 L415,330 L405,360 L375,375 L350,360 L335,330 Z"},
+    {id:"chittagong-2", label:"চট্টগ্রাম-২", cx:400, cy:395, path:"M375,375 L405,360 L420,385 L410,415 L385,420 L368,402 Z"},
+    {id:"chittagong-3", label:"চট্টগ্রাম-৩", cx:345, cy:370, path:"M320,355 L350,360 L368,402 L350,415 L320,405 L305,378 Z"},
+    {id:"comilla-1", label:"কুমিল্লা-১", cx:318, cy:318, path:"M285,295 L340,305 L335,330 L310,335 L285,325 Z"},
+    {id:"noakhali-1", label:"নোয়াখালী-১", cx:332, cy:350, path:"M310,335 L335,330 L350,360 L320,355 L305,342 Z"},
+  ],
+  "সিলেট": [
+    {id:"sylhet-1", label:"সিলেট-১", cx:380, cy:210, path:"M340,185 L420,180 L430,220 L410,245 L360,240 L340,215 Z"},
+    {id:"sylhet-2", label:"সিলেট-২", cx:350, cy:255, path:"M340,215 L410,245 L405,275 L365,280 L335,260 Z"},
+  ],
+  "রাজশাহী": [
+    {id:"rajshahi-1", label:"রাজশাহী-১", cx:175, cy:230, path:"M135,200 L215,195 L220,220 L215,245 L170,255 L140,240 Z"},
+    {id:"rajshahi-2", label:"রাজশাহী-২", cx:185, cy:265, path:"M140,240 L215,245 L218,275 L195,285 L155,278 L138,260 Z"},
+  ],
+  "খুলনা": [
+    {id:"khulna-1", label:"খুলনা-১", cx:175, cy:360, path:"M148,330 L210,325 L215,355 L205,380 L170,385 L148,365 Z"},
+    {id:"khulna-2", label:"খুলনা-২", cx:175, cy:405, path:"M148,365 L205,380 L200,415 L175,430 L148,415 Z"},
+    {id:"jessore-1", label:"যশোর-১", cx:195, cy:318, path:"M155,295 L225,295 L228,315 L215,330 L188,332 L155,316 Z"},
+  ],
+  "বরিশাল": [
+    {id:"barisal-1", label:"বরিশাল-১", cx:258, cy:395, path:"M228,375 L285,368 L290,395 L278,418 L245,425 L225,408 Z"},
+  ],
+  "রংপুর": [
+    {id:"rangpur-1", label:"রংপুর-১", cx:195, cy:148, path:"M155,118 L238,112 L242,148 L230,175 L175,180 L150,158 Z"},
+  ],
+  "ময়মনসিংহ": [
+    {id:"mymensingh-1", label:"ময়মনসিংহ-১", cx:280, cy:215, path:"M244,190 L320,185 L330,215 L315,240 L270,245 L242,222 Z"},
+  ]
+};
+
+// Build flat lookup
+const FLAT_REGIONS = {};
+Object.values(DIVISION_SHAPES).forEach(arr => arr.forEach(r => { FLAT_REGIONS[r.id] = r; }));
+
+// ── Render Map ──────────────────────────────────────────────
+function getRegionColor(constId) {
+  const c = state.data.constituencies[constId];
+  if (!c) return '#1e2d45';
+  const leader = App.getLeader(c);
+  if (!leader) return '#1e2d45';
+  return state.data.parties[leader.party] || '#888';
+}
+
+function renderMap() {
+  const svg = document.getElementById('bd-map');
+  svg.innerHTML = '';
+
+  // Background water/ocean effect
+  const bg = document.createElementNS("http://www.w3.org/2000/svg","rect");
+  bg.setAttribute("width","500"); bg.setAttribute("height","600");
+  bg.setAttribute("fill","#060c18");
+  svg.appendChild(bg);
+
+  Object.entries(DIVISION_SHAPES).forEach(([division, regions]) => {
+    // Division label
+    const avgX = regions.reduce((s,r) => s+r.cx,0)/regions.length;
+    const avgY = regions.reduce((s,r) => s+r.cy,0)/regions.length;
+
+    if (state.filterDiv === 'all' || state.filterDiv === division) {
+      regions.forEach(region => {
+        const c = state.data.constituencies[region.id];
+        const matchSearch = !state.searchQ ||
+          (c && c.name.includes(state.searchQ)) ||
+          region.label.includes(state.searchQ);
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+        path.setAttribute("d", region.path);
+        path.setAttribute("fill", matchSearch ? getRegionColor(region.id) : '#0d1420');
+        path.setAttribute("class", "region" + (state.selectedId === region.id ? " selected" : ""));
+        path.setAttribute("data-id", region.id);
+        path.style.opacity = matchSearch ? '1' : '0.25';
+        svg.appendChild(path);
+
+        // Label
+        const text = document.createElementNS("http://www.w3.org/2000/svg","text");
+        text.setAttribute("x", region.cx);
+        text.setAttribute("y", region.cy);
+        text.setAttribute("text-anchor","middle");
+        text.setAttribute("dominant-baseline","middle");
+        text.setAttribute("class","region-label");
+        text.textContent = c ? c.name : region.label;
+        svg.appendChild(text);
+      });
+
+      // Division boundary label (subtle)
+      const divText = document.createElementNS("http://www.w3.org/2000/svg","text");
+      divText.setAttribute("x", avgX);
+      divText.setAttribute("y", avgY - 22);
+      divText.setAttribute("text-anchor","middle");
+      divText.setAttribute("font-size","7");
+      divText.setAttribute("fill","rgba(255,255,255,0.25)");
+      divText.setAttribute("font-family", "Hind Siliguri, sans-serif");
+      divText.textContent = division;
+      svg.appendChild(divText);
+    }
+  });
+
+  // Events
+  svg.querySelectorAll('.region').forEach(el => {
+    el.addEventListener('mouseenter', onRegionHover);
+    el.addEventListener('mousemove', onRegionHover);
+    el.addEventListener('mouseleave', onRegionLeave);
+    el.addEventListener('click', onRegionClick);
+  });
+
+  applyZoom();
+}
+
+// ── Zoom ────────────────────────────────────────────────────
+function applyZoom() {
+  const svg = document.getElementById('bd-map');
+  svg.style.transform = `scale(${state.zoom})`;
+  svg.style.transformOrigin = `${state.zoomX}px ${state.zoomY}px`;
+}
+
+document.getElementById('zoom-in').onclick = () => { state.zoom = Math.min(state.zoom + 0.3, 4); applyZoom(); };
+document.getElementById('zoom-out').onclick = () => { state.zoom = Math.max(state.zoom - 0.3, 0.5); applyZoom(); };
+document.getElementById('zoom-reset').onclick = () => { state.zoom = 1; applyZoom(); };
+document.getElementById('btn-reset-view').onclick = () => {
+  state.zoom = 1; state.filterDiv = 'all'; state.searchQ = ''; state.selectedId = null;
+  document.getElementById('search-input').value = '';
+  document.querySelectorAll('.div-btn').forEach(b => b.classList.toggle('active', b.dataset.div === 'all'));
+  renderAll();
+};
+
+// ── Tooltip ─────────────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+
+function onRegionHover(e) {
+  const id = e.target.dataset.id;
+  const c = state.data.constituencies[id];
+  if (!c) return;
+  const top2 = App.getTop2(c);
+  const diff = App.getVoteDiff(c);
+  let html = `<h4>${c.name}</h4>`;
+  top2.forEach((cand, i) => {
+    const color = state.data.parties[cand.party] || '#888';
+    html += `<div class="tt-candidate">
+      <div class="tt-dot" style="background:${color}"></div>
+      <div class="tt-info">
+        <div class="tt-name">${cand.name}</div>
+        <div class="tt-party">${cand.party}</div>
+      </div>
+      <div class="tt-votes">${App.formatVotes(cand.votes)}</div>
+    </div>`;
+  });
+  if (top2.length >= 2) {
+    html += `<div class="tt-diff"><span>ব্যবধান</span><span>${App.formatVotes(diff)} ভোট</span></div>`;
+  }
+  tooltip.innerHTML = html;
+  tooltip.style.display = 'block';
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + 260 > window.innerWidth) x = e.clientX - 270;
+  if (y + 200 > window.innerHeight) y = e.clientY - 210;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+}
+
+document.addEventListener('mousemove', e => {
+  if (tooltip.style.display === 'block') moveTooltip(e);
+});
+
+function onRegionLeave() {
+  tooltip.style.display = 'none';
+}
+
+function onRegionClick(e) {
+  const id = e.target.dataset.id;
+  state.selectedId = state.selectedId === id ? null : id;
+  renderAll();
+}
+
+// ── Division filter ─────────────────────────────────────────
+function buildDivFilter() {
+  const container = document.getElementById('div-filter');
+  container.innerHTML = '<button class="div-btn active" data-div="all">সব বিভাগ</button>';
+  const divs = Object.keys(DIVISION_SHAPES);
+  divs.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'div-btn';
+    btn.dataset.div = d;
+    btn.textContent = d;
+    container.appendChild(btn);
+  });
+  container.querySelectorAll('.div-btn').forEach(btn => {
+    btn.onclick = () => {
+      state.filterDiv = btn.dataset.div;
+      container.querySelectorAll('.div-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderAll();
+    };
+  });
+}
+
+// ── Search ──────────────────────────────────────────────────
+document.getElementById('search-input').addEventListener('input', function() {
+  state.searchQ = this.value.trim();
+  renderAll();
+});
+
+// ── Sidebar: Party Seats ─────────────────────────────────────
+function renderPartySeats() {
+  const seats = App.getSeatCount(state.data);
+  const total = Object.values(seats).reduce((s,v)=>s+v,0) || 1;
+  const container = document.getElementById('party-seats');
+  container.innerHTML = '';
+
+  const sorted = Object.entries(seats).sort((a,b)=>b[1]-a[1]);
+  sorted.forEach(([party, count]) => {
+    const color = state.data.parties[party] || '#888';
+    const pct = Math.round(count / total * 100);
+    container.innerHTML += `
+      <div class="party-row">
+        <div class="party-color" style="background:${color}"></div>
+        <div class="party-name-label">${party}</div>
+        <div class="party-seats-bar">
+          <div class="party-bar-fill" style="width:${pct}%;background:${color}"></div>
+        </div>
+        <div class="party-seats-count">${App.toBengaliNum(count)}</div>
+      </div>`;
+  });
+
+  // Pie chart
+  const segments = sorted.map(([party, count]) => ({
+    value: count,
+    color: state.data.parties[party] || '#888'
+  }));
+  drawPie('pie-chart', segments);
+}
+
+// ── Sidebar: Constituency Detail ─────────────────────────────
+function renderDetail() {
+  const box = document.getElementById('detail-box');
+  const id = state.selectedId;
+  if (!id) {
+    box.innerHTML = '<div class="detail-empty">মানচিত্রে একটি আসন নির্বাচন করুন</div>';
+    return;
+  }
+  const c = state.data.constituencies[id];
+  if (!c) { box.innerHTML = '<div class="detail-empty">তথ্য পাওয়া যায়নি</div>'; return; }
+
+  const sorted = [...(c.candidates||[])].sort((a,b)=>b.votes-a.votes);
+  const total = App.getTotalVotes(c);
+  let html = `<div class="detail-title">${c.name}</div>`;
+  if (c.division) html += `<div style="font-size:0.72rem;color:var(--text2);margin-bottom:10px">📍 ${c.division} বিভাগ</div>`;
+
+  sorted.forEach((cand, i) => {
+    const color = state.data.parties[cand.party] || '#888';
+    const pct = total > 0 ? Math.round(cand.votes / total * 100) : 0;
+    const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : 'rank-n';
+    html += `
+      <div class="cand-item">
+        <div class="cand-rank ${rankClass}">${App.toBengaliNum(i+1)}</div>
+        <div class="cand-info">
+          <div class="cand-name">${cand.name}</div>
+          <div class="cand-party">${cand.party}</div>
+          <div class="vote-progress"><div class="vote-bar" style="width:${pct}%;background:${color}"></div></div>
+        </div>
+        <div class="cand-votes">
+          <div class="cand-vcount">${App.formatVotes(cand.votes)}</div>
+          <div class="cand-vpct">${App.toBengaliNum(pct)}%</div>
+        </div>
+      </div>`;
+  });
+
+  if (sorted.length >= 2) {
+    const diff = sorted[0].votes - sorted[1].votes;
+    html += `<div class="diff-badge">📊 ব্যবধান: ${App.formatVotes(diff)} ভোট</div>`;
+  }
+
+  box.innerHTML = html;
+}
+
+// ── Sidebar: Constituency List ────────────────────────────────
+function renderConstList() {
+  const container = document.getElementById('const-list');
+  container.innerHTML = '';
+  Object.entries(state.data.constituencies).forEach(([id, c]) => {
+    const leader = App.getLeader(c);
+    const color = leader ? (state.data.parties[leader.party] || '#888') : '#888';
+    const div = document.createElement('div');
+    div.className = 'const-item' + (state.selectedId === id ? ' active' : '');
+    div.innerHTML = `
+      <div class="const-dot" style="background:${color}"></div>
+      <div class="const-name">${c.name}</div>
+      <div class="const-leader">${leader ? leader.party : '—'}</div>`;
+    div.onclick = () => { state.selectedId = id; renderAll(); };
+    container.appendChild(div);
+  });
+}
+
+// ── Stats Bar ────────────────────────────────────────────────
+function renderStats() {
+  const total = Object.keys(state.data.constituencies).length;
+  const seats = App.getSeatCount(state.data);
+  const topEntry = Object.entries(seats).sort((a,b)=>b[1]-a[1])[0];
+  const totalVotes = Object.values(state.data.constituencies)
+    .reduce((s,c) => s + App.getTotalVotes(c), 0);
+
+  document.getElementById('stat-declared').textContent = App.toBengaliNum(total);
+  document.getElementById('stat-leading-party').textContent = topEntry ? topEntry[0] : '—';
+  document.getElementById('stat-leading-seats').textContent = topEntry ? `${App.toBengaliNum(topEntry[1])} আসন` : '০ আসন';
+  document.getElementById('stat-votes').textContent = App.formatVotes(totalVotes);
+}
+
+// ── Legend ──────────────────────────────────────────────────
+function renderLegend() {
+  const legend = document.getElementById('map-legend');
+  legend.innerHTML = '';
+  Object.entries(state.data.parties).forEach(([name, color]) => {
+    legend.innerHTML += `
+      <div class="legend-item">
+        <div class="legend-dot" style="background:${color}"></div>
+        <span>${name}</span>
+      </div>`;
+  });
+}
+
+// ── Full Render ──────────────────────────────────────────────
+function renderAll() {
+  renderMap();
+  renderPartySeats();
+  renderDetail();
+  renderConstList();
+  renderStats();
+  renderLegend();
+}
+
+// ── Real-time sync ───────────────────────────────────────────
+window.addEventListener('storage', e => {
+  if (e.key === App.STORAGE_KEY) {
+    state.data = App.loadData();
+    renderAll();
+  }
+});
+
+// ── Init ─────────────────────────────────────────────────────
+buildDivFilter();
+renderAll();
+</script>
+</body>
+</html>
